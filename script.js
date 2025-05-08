@@ -1,5 +1,4 @@
 
-
 let angka = parseInt(localStorage.getItem("jumlahKlik")) || 0;
 let clicks = 0;
 let startTime = null;
@@ -20,26 +19,24 @@ if (!namaInputUser) {
 if (!namaInputUser) {
     while (mauLagi === true) {
         const namaUser = showNamePopup();
-
-        if (namaUser !== null && namaUser.trim() !== "" && namaUser.length >= 4 && namaUser.length <= 20) {
+        if (namaUser !== null && namaUser.trim() !== "" && namaUser.length >= 4 && namaUser.length <= 20 && isNaN(namaUser)) {
             namaInputUser = namaUser
             localStorage.setItem("namaUser", namaInputUser);
             showAlert("Nama kamu" + " " + namaInputUser, "Pemberitahuan")
-        } else {
-            if (namaUser === "") {
-                showAlert("Nama tidak boleh kosong!", "Error");
-            }
-            
-            if (namaUser.length < 4) {
-                showAlert("Nama minimal harus 4 karakter!", "Error");
-            }
-            
-            if (namaUser.length > 20) {
-                showAlert("Nama maksimal 20 karakter!", "Error");
-
-            }
+        } else if (namaUser === "") {
+            showAlert("Nama tidak boleh kosong!", "Error");
+            continue;
+        } else if (namaUser.length < 4) {
+            showAlert("Nama minimal harus 4 karakter!", "Error");
+            continue;
+        } else if (namaUser.length > 20) {
+            showAlert("Nama maksimal 20 karakter!", "Error");
+            continue;
+        } else if (!isNaN(namaUser)) {
+            showAlert("Nama tidak boleh angka!", "Error");
+            continue;
         }
-        mauLagi = showConfirm("apakah kamu ingin mengganti nama?")
+        mauLagi = showConfirm("apakah kamu ingin mengganti nama?");
     }
 }
 
@@ -65,6 +62,11 @@ function confirmNameChange() {
     
     if (newName.length > 20) {
         showAlert("Nama maksimal 20 karakter!", "Error");
+        return;
+    }
+
+    if (!isNaN(newName)) {
+        showAlert("Nama tidak boleh angka!", "Error")
         return;
     }
 
