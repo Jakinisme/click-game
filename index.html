@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click Game</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link rel="stylesheet" href="assets/css/popup.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <div class="stats-panel">
+            <p class="cpm">Kecepatan Klik: <span id="cpm">0 klik/menit</span></p>
+        </div>
+
+        <div class="player-info">
+            <button onclick="gantiNama()" type="button" id="userName" class="boxNama">
+                <i class="fas fa-user"></i> Nama
+            </button>
+        </div>
+
+        <div class="game-controls">
+            <button onclick="tambahAngka()" type="button" class="click-button">
+                <i class="fas fa-hand-pointer"></i> KLIK SAYA
+            </button>
+            <button onclick="resetAngka()" type="button" class="reset-button">
+                <i class="fas fa-redo"></i> RESET KLIK
+            </button>
+        </div>
+
+        <div class="score-box">
+            <p class="number" id="hasil">0</p>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="namePopup">
+        <div class="popup-box">
+            <h2 class="popup-title">Ubah Nama</h2>
+            <input type="text" class="popup-input" id="newName" placeholder="Masukkan nama baru">
+            <div class="popup-buttons">
+                <button class="popup-button cancel" onclick="closeNamePopup()">Batal</button>
+                <button class="popup-button confirm" onclick="confirmNameChange()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert-overlay" id="alertPopup">
+        <div class="alert-box">
+            <i class="fas fa-info-circle alert-icon"></i>
+            <h2 class="alert-title">Pemberitahuan</h2>
+            <p class="alert-message" id="alertMessage"></p>
+            <button class="alert-button" onclick="closeAlert()">OK</button>
+        </div>
+    </div>
+
+    <div class="achievement-alert" id="achievementAlert">
+        <i class="fas fa-trophy achievement-icon"></i>
+        <div class="achievement-content">
+            <div class="achievement-title">Pencapaian Baru!</div>
+            <div class="achievement-message" id="achievementMessage"></div>
+        </div>
+    </div>
+
+    <div class="confirm-overlay" id="confirmPopup">
+        <div class="confirm-box">
+            <i class="fas fa-question-circle confirm-icon"></i>
+            <h2 class="confirm-title">Konfirmasi</h2>
+            <p class="confirm-message" id="confirmMessage"></p>
+            <div class="confirm-buttons">
+                <button class="confirm-button cancel" onclick="handleConfirm(false)">Batal</button>
+                <button class="confirm-button confirm" onclick="handleConfirm(true)">Ya</button>
+            </div>
+        </div>
+    </div>
+    <script src="function/popup.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
