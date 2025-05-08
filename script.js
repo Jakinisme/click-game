@@ -1,25 +1,14 @@
 
 
-let angka = localStorage.getItem("jumlahKlik") || 0;
+let angka = parseInt(localStorage.getItem("jumlahKlik")) || 0;
 let clicks = 0;
 let startTime = null;
 let clickInterval = null;
 
-let klikPerMenit = 0;
-
-let isReset = true; //boolean untuk reset klik
 let mauLagi = true; //boolean untuk loop
-let timerAktif = false;
-
-let waktuMulai = null;
 
 // Initial Welcome
 let namaInputUser = localStorage.getItem("namaUser") || ""; //menyimpan nama
-
-function closeAlert() {
-    const popup = document.getElementById('alertPopup');
-    popup.classList.remove('active');
-}
 
 if (!namaInputUser) {
     showAlert("Selamat datang di Click Game!", "Halo User!");
@@ -28,32 +17,36 @@ if (!namaInputUser) {
 }
 
 // First login name input
-async function handleFirstLogin() {
-    if (!namaInputUser) {
-        showNamePopup();
-        const confirmed = await showConfirm("Apakah kamu ingin mengubah nama?");
-        if (confirmed) {
-            // Wait for name change
-            await new Promise(resolve => {
-                const checkNameChange = setInterval(() => {
-                    const newName = document.getElementById('newName').value.trim();
-                    if (newName && newName.length >= 4 && newName.length <= 20) {
-                        clearInterval(checkNameChange);
-                        resolve();
-                    }
-                }, 100);
-            });
+if (!namaInputUser) {
+    while (mauLagi === true) {
+        const namaUser = showNamePopup();
+
+        if (namaUser !== null && namaUser.trim() !== "" && namaUser.length >= 4 && namaUser.length <= 20) {
+            namaInputUser = namaUser
+            localStorage.setItem("namaUser", namaInputUser);
+            showAlert("Nama kamu" + " " + namaInputUser, "Pemberitahuan")
+        } else {
+            if (namaUser === "") {
+                showAlert("Nama tidak boleh kosong!", "Error");
+            }
+            
+            if (namaUser.length < 4) {
+                showAlert("Nama minimal harus 4 karakter!", "Error");
+            }
+            
+            if (namaUser.length > 20) {
+                showAlert("Nama maksimal 20 karakter!", "Error");
+
+            }
         }
+        mauLagi = showConfirm("apakah kamu ingin mengganti nama?")
     }
 }
 
-// Call the first login handler
-handleFirstLogin();
-
 document.getElementById("userName").innerHTML = namaInputUser
-showAlert("Ok, jadi namamu " + namaInputUser + " ya!");
 
-function gantiNama() { // fungsi untuk mengganti nama
+// fungsi untuk mengganti nama
+function gantiNama() {
     showNamePopup();
 }
 
@@ -95,15 +88,15 @@ function tambahAngka() {
     }
 
     // Achievement checks
-    if (angka === 11) {
+    if (angka === 10) {
         showAchievement("Wow " + namaInputUser + " sudah mencapai 10 klik!");
-    } else if (angka === 101) {
+    } else if (angka === 100) {
         showAchievement("Wow " + namaInputUser + " sudah mencapai 100 klik, gila!");
-    } else if (angka === 1001) {
+    } else if (angka === 1000) {
         showAchievement("Wow " + namaInputUser + " sudah mencapai 1000 klik, master!");
-    } else if (angka === 10001) {
+    } else if (angka === 10000) {
         showAchievement("Wow " + namaInputUser + " sudah mencapai 10000 klik, gila kamu kuat mainin game ini!");
-    } else if (angka === 100001) {
+    } else if (angka === 100000) {
         showAchievement("Wow " + namaInputUser + " sudah mencapai 100000 klik! Kamu gak pake auto clicker kan?");
     }
 }

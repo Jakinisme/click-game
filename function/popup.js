@@ -37,6 +37,11 @@ function showAchievement(message) {
     }, 3000);
 }
 
+function closeAlert() {
+    const popup = document.getElementById('alertPopup');
+    popup.classList.remove('active');
+}
+
 function closeNamePopup() {
     const popup = document.getElementById('namePopup');
     popup.classList.remove('active');
