@@ -6,7 +6,7 @@ let clickInterval = null;
 
 let mauLagi = true; //boolean untuk loop
 
-// Initial Welcome
+// welcome user
 let namaInputUser = localStorage.getItem("namaUser") || ""; //menyimpan nama
 
 if (!namaInputUser) {
@@ -15,7 +15,7 @@ if (!namaInputUser) {
     showAlert("Selamat datang kembali di Click Game!", "Halo " + namaInputUser + "!");
 }
 
-// First login name input
+// memasukkan nama saat pertama kali masuk website
 if (!namaInputUser) {
     while (mauLagi === true) {
         const namaUser = showNamePopup();
@@ -47,6 +47,7 @@ function gantiNama() {
     showNamePopup();
 }
 
+//function untuk mengubah nama dan cek kondisi nama
 function confirmNameChange() {
     const newName = document.getElementById('newName').value.trim();
     
@@ -77,10 +78,13 @@ function confirmNameChange() {
     showAlert("Nama berhasil diubah menjadi: " + newName, "Sukses");
 }
 
+//function untuk menambahkan click
 function tambahAngka() {
-    angka++;
-    localStorage.setItem("jumlahKlik", angka);
+
+    //increment angka saat di klik
+    angka ++;
     document.getElementById('hasil').textContent = angka;
+    localStorage.setItem("jumlahKlik", angka);
     
     // Update CPM
     clicks++;
@@ -89,20 +93,23 @@ function tambahAngka() {
         clickInterval = setInterval(updateCPM, 1000);
     }
 
-    // Achievement checks
+     // Achievement checks
     if (angka === 10) {
-        showAchievement("Wow " + namaInputUser + " sudah mencapai 10 klik!");
-    } else if (angka === 100) {
-        showAchievement("Wow " + namaInputUser + " sudah mencapai 100 klik, gila!");
-    } else if (angka === 1000) {
-        showAchievement("Wow " + namaInputUser + " sudah mencapai 1000 klik, master!");
-    } else if (angka === 10000) {
-        showAchievement("Wow " + namaInputUser + " sudah mencapai 10000 klik, gila kamu kuat mainin game ini!");
-    } else if (angka === 100000) {
-        showAchievement("Wow " + namaInputUser + " sudah mencapai 100000 klik! Kamu gak pake auto clicker kan?");
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 10 klik!");
+     } else if (angka === 100) {
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 100 klik, gila!");
+     } else if (angka === 1000) {
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 1.000 klik, master!");
+     } else if (angka === 10000) {
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 10.000 klik, gila kamu kuat mainin game ini!");
+     } else if (angka === 100000) {
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 100.000 klik!!, kamu gak pake auto clicker kan?");
+     } else if (angka === 1000000) {
+    showAchievement("Wow " + namaInputUser + " sudah mencapai 1.000.000 klik!?!, kamu pasti pake auto clicker!!");
     }
 }
 
+//function untuk update click per menit
 function updateCPM() {
     const currentTime = Date.now();
     const timeElapsed = (currentTime - startTime) / 1000; // in seconds
@@ -110,6 +117,7 @@ function updateCPM() {
     document.getElementById('cpm').textContent = cpm + ' klik/menit';
 }
 
+//function untuk mereset click
 function resetAngka() {
     if (angka === 0) {
         showAlert("Klik kamu masih 0, tidak bisa mereset klik!", "Error");
@@ -128,7 +136,7 @@ function resetAngka() {
     }
 }
 
-// Add click animation effect
+//memberi animasi saat click
 document.querySelector('.click-button').addEventListener('click', function(e) {
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
