@@ -1,0 +1,5 @@
+name = "game-click"
+compatibility_date = "2025-05-11"
+
+[assets]
+directory = "."
