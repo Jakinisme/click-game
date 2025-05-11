@@ -1,81 +1,75 @@
-
 let angka = parseInt(localStorage.getItem("jumlahKlik")) || 0;
 let clicks = 0;
 let startTime = null;
 let clickInterval = null;
 
-let mauLagi = true; //boolean untuk loop
+// Welcome user
+let namaInputUser = localStorage.getItem("namaUser") || ""; //menyimpan nama dalam localstorage
 
-// welcome user
-let namaInputUser = localStorage.getItem("namaUser") || ""; //menyimpan nama
+// Async function untuk menghandle pertama kali masuk
+async function initializeUser() {
+    if (!namaInputUser) {
+        showAlert("Selamat datang di Click Game!", "Halo User!");
+        let nameIsValid = false;
+        while (!nameIsValid) {
+            const namaUser = await showNamePopup(); // showNamePopup now returns a Promise
 
-if (!namaInputUser) {
-    showAlert("Selamat datang di Click Game!", "Halo User!");
-} else {
-    showAlert("Selamat datang kembali di Click Game!", "Halo " + namaInputUser + "!");
-}
+            if (namaUser === null) { // User clicked Batal/Cancel
+                showAlert("Kamu harus memasukkan nama untuk melanjutkan.", "Error");
+                continue;
+            }
 
-// memasukkan nama saat pertama kali masuk website
-if (!namaInputUser) {
-    while (mauLagi === true) {
-        const namaUser = showNamePopup();
-        if (namaUser !== null && namaUser.trim() !== "" && namaUser.length >= 4 && namaUser.length <= 20 && isNaN(namaUser)) {
-            namaInputUser = namaUser
-            localStorage.setItem("namaUser", namaInputUser);
-            showAlert("Nama kamu" + " " + namaInputUser, "Pemberitahuan")
-        } else if (namaUser === "") {
-            showAlert("Nama tidak boleh kosong!", "Error");
-            continue;
-        } else if (namaUser.length < 4) {
-            showAlert("Nama minimal harus 4 karakter!", "Error");
-            continue;
-        } else if (namaUser.length > 20) {
-            showAlert("Nama maksimal 20 karakter!", "Error");
-            continue;
-        } else if (!isNaN(namaUser)) {
-            showAlert("Nama tidak boleh angka!", "Error");
-            continue;
+            const trimmedName = namaUser.trim();
+
+            if (trimmedName === "") {
+                showAlert("Nama tidak boleh kosong!", "Error");
+            } else if (trimmedName.length < 4) {
+                showAlert("Nama minimal harus 4 karakter!", "Error");
+            } else if (trimmedName.length > 20) {
+                showAlert("Nama maksimal 20 karakter!", "Error");
+            } else if (!isNaN(trimmedName)) {
+                showAlert("Nama tidak boleh angka!", "Error");
+            } else {
+                namaInputUser = trimmedName;
+                localStorage.setItem("namaUser", namaInputUser);
+                document.getElementById("userName").innerHTML = namaInputUser;
+                showAlert("Nama kamu berhasil diubah! " + namaInputUser, "Pemberitahuan");
+                closeNamePopup();
+                nameIsValid = true;
+            }
         }
-        mauLagi = showConfirm("apakah kamu ingin mengganti nama?");
+    } else {
+        showAlert("Selamat datang kembali di Click Game!", "Halo " + namaInputUser + "!");
+        document.getElementById("userName").innerHTML = namaInputUser;
     }
 }
 
-document.getElementById("userName").innerHTML = namaInputUser
+initializeUser();
 
-// fungsi untuk mengganti nama
-function gantiNama() {
-    showNamePopup();
-}
+// fungsi untuk mengganti nama (async version)
+async function gantiNama() {
+    let nameIsValid = false;
+    while (!nameIsValid) {
+        const newNameAttempt = await showNamePopup();
+        const trimmedName = newNameAttempt.trim();
 
-//function untuk mengubah nama dan cek kondisi nama
-function confirmNameChange() {
-    const newName = document.getElementById('newName').value.trim();
-    
-    if (newName === "") {
-        showAlert("Nama tidak boleh kosong!", "Error");
-        return;
+        if (trimmedName === "") {
+            showAlert("Nama tidak boleh kosong!", "Error");
+        } else if (trimmedName.length < 4) {
+            showAlert("Nama minimal harus 4 karakter!", "Error");
+        } else if (trimmedName.length > 20) {
+            showAlert("Nama maksimal 20 karakter!", "Error");
+        } else if (!isNaN(trimmedName)) {
+            showAlert("Nama tidak boleh angka!", "Error");
+        } else {
+            namaInputUser = trimmedName;
+            localStorage.setItem("namaUser", namaInputUser);
+            document.getElementById('userName').textContent = namaInputUser;
+            closeNamePopup();
+            showAlert("Nama berhasil diubah menjadi: " + namaInputUser, "Sukses");
+            nameIsValid = true;
+        }
     }
-    
-    if (newName.length < 4) {
-        showAlert("Nama minimal harus 4 karakter!", "Error");
-        return;
-    }
-    
-    if (newName.length > 20) {
-        showAlert("Nama maksimal 20 karakter!", "Error");
-        return;
-    }
-
-    if (!isNaN(newName)) {
-        showAlert("Nama tidak boleh angka!", "Error")
-        return;
-    }
-
-    namaInputUser = newName;
-    localStorage.setItem("namaUser", namaInputUser);
-    document.getElementById('userName').textContent = newName;
-    closeNamePopup();
-    showAlert("Nama berhasil diubah menjadi: " + newName, "Sukses");
 }
 
 //function untuk menambahkan click

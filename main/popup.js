@@ -45,11 +45,36 @@ function closeAlert() {
 function closeNamePopup() {
     const popup = document.getElementById('namePopup');
     popup.classList.remove('active');
-    document.getElementById('newName').value = '';
+    const newNameInput = document.getElementById('newName');
+    if (newNameInput) {
+        newNameInput.value = '';
+    }
 }
+
+let resolveNamePopupPromise = null;
 
 function showNamePopup() {
     const popup = document.getElementById('namePopup');
     popup.classList.add('active');
     document.getElementById('newName').focus();
+
+    return new Promise((resolve) => {
+        resolveNamePopupPromise = resolve;
+    });
+}
+
+function handleNameConfirm() {
+    if (resolveNamePopupPromise) {
+        const newName = document.getElementById('newName').value;
+        resolveNamePopupPromise(newName);
+        resolveNamePopupPromise = null;
+    }
+}
+
+function handleNameCancel() {
+    if (resolveNamePopupPromise) {
+        resolveNamePopupPromise(null);
+        resolveNamePopupPromise = null;
+    }
+    closeNamePopup();
 }
